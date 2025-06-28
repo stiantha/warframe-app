@@ -1,0 +1,77 @@
+{
+  "timestamp": "2024-01-15T10:30:00Z",
+  "alerts": [
+    {
+      "id": "alert_1",
+      "name": "Resource Alert",
+      "type": "Alert",
+      "location": "Earth - Cambria",
+      "startTime": "2024-01-15T10:00:00Z",
+      "endTime": "2024-01-15T12:00:00Z",
+      "description": "Reward: 5000 Credits + Orokin Cell"
+    },
+    {
+      "id": "alert_2",
+      "name": "Mod Alert",
+      "type": "Alert",
+      "location": "Mars - Olympus",
+      "startTime": "2024-01-15T09:30:00Z",
+      "endTime": "2024-01-15T11:30:00Z",
+      "description": "Reward: Serration Mod"
+    }
+  ],
+  "invasions": [
+    {
+      "id": "invasion_1",
+      "name": "Grineer vs Corpus",
+      "type": "Invasion",
+      "location": "Saturn - Helene",
+      "startTime": "2024-01-15T08:00:00Z",
+      "endTime": "2024-01-15T20:00:00Z",
+      "description": "Grineer: 3x Orokin Cell vs Corpus: 3x Neural Sensor"
+    }
+  ],
+  "sorties": [
+    {
+      "id": "sortie_1",
+      "name": "Sortie 1: Exterminate",
+      "type": "Sortie",
+      "location": "Earth - Cambria",
+      "startTime": "2024-01-15T00:00:00Z",
+      "endTime": "2024-01-16T00:00:00Z",
+      "description": "Exterminate, Bow Only, Energy Reduction"
+    }
+  ],
+  "fissures": [
+    {
+      "id": "fissure_1",
+      "name": "Lith Fissure",
+      "type": "Fissure",
+      "location": "Mercury - Terminus",
+      "startTime": "2024-01-15T10:00:00Z",
+      "endTime": "2024-01-15T12:00:00Z",
+      "description": "Exterminate - Grineer (Lith)"
+    },
+    {
+      "id": "fissure_2",
+      "name": "Meso Fissure",
+      "type": "Fissure",
+      "location": "Mars - Olympus",
+      "startTime": "2024-01-15T10:30:00Z",
+      "endTime": "2024-01-15T12:30:00Z",
+      "description": "Survival - Corpus (Meso)"
+    }
+  ],
+  "events": [],
+  "nightwave": [
+    {
+      "id": "nightwave_1",
+      "name": "Nightwave Series 3",
+      "type": "Nightwave",
+      "location": "Global",
+      "startTime": "2024-01-01T00:00:00Z",
+      "endTime": "2024-03-31T23:59:59Z",
+      "description": "Glassmaker"
+    }
+  ]
+} 
