@@ -2,55 +2,9 @@ import { DropTableData, parseDropTableData, searchItems, searchRelics } from './
 import { Item } from '../models/item';
 import { Relic } from '../models/relic';
 
-interface MockData {
-  items: Array<{
-    id: string;
-    name: string;
-    type: string;
-    rarity: string;
-    mastery: number;
-    description: string;
-  }>;
-  relics: Array<{
-    id: string;
-    name: string;
-    tier: string;
-    era: string;
-    vaulted: boolean;
-    rewards: Array<{
-      item: string;
-      rarity: string;
-      chance: number;
-    }>;
-  }>;
-  itemDrops: Array<{
-    item: {
-      id: string;
-      name: string;
-      type: string;
-      rarity: string;
-      mastery: number;
-    };
-    location: string;
-    chance: number;
-  }>;
-  relicDrops: Array<{
-    relic: {
-      id: string;
-      name: string;
-      tier: string;
-      era: string;
-      vaulted: boolean;
-      rewards: Array<{
-        item: string;
-        rarity: string;
-        chance: number;
-      }>;
-    };
-    location: string;
-    chance: number;
-  }>;
-}
+// API endpoints for real Warframe data
+const WARFRAME_MARKET_API = 'https://api.warframe.market/v1';
+const WARFRAME_WIKI_API = 'https://warframe.fandom.com/api.php';
 
 export class DropTableService {
   private static instance: DropTableService;
@@ -76,11 +30,22 @@ export class DropTableService {
     }
 
     try {
-      // For now, we'll use mock data. In a real implementation, this would fetch from an API
+      // Try to fetch from real APIs first, fallback to mock data
+      const realData = await this.fetchRealData();
+      if (realData) {
+        this.data = parseDropTableData(realData);
+        this.lastLoad = now;
+        return this.data;
+      }
+    } catch (error) {
+      console.error('Error fetching real data:', error);
+    }
+
+    // Fallback to mock data
+    try {
       const mockData = await this.getMockData();
       this.data = parseDropTableData(mockData);
       this.lastLoad = now;
-      
       return this.data;
     } catch (error) {
       console.error('Error loading drop table data:', error);
@@ -91,6 +56,54 @@ export class DropTableService {
         itemDrops: [],
         relicDrops: [],
       };
+    }
+  }
+
+  private async fetchRealData(): Promise<any> {
+    try {
+      // Fetch items from Warframe Market API
+      const itemsResponse = await fetch(`${WARFRAME_MARKET_API}/items`);
+      const itemsData = await itemsResponse.json();
+      
+      // Transform the data to our format
+      const items = itemsData.payload?.items?.map((item: any) => ({
+        id: item.url_name,
+        name: item.item_name,
+        type: this.mapItemType(item.category),
+        rarity: 'Common', // Warframe Market doesn't provide rarity
+        mastery: 0, // Would need additional API call
+        description: item.description || '',
+      })) || [];
+
+      // For now, return a simplified structure
+      return {
+        items,
+        relics: [], // Would need separate API call for relics
+        itemDrops: [],
+        relicDrops: [],
+      };
+    } catch (error) {
+      console.error('Error fetching from Warframe Market API:', error);
+      return null;
+    }
+  }
+
+  private mapItemType(category: string): Item['type'] {
+    switch (category?.toLowerCase()) {
+      case 'warframes':
+        return 'Warframe';
+      case 'primary':
+      case 'secondary':
+      case 'melee':
+        return 'Weapon';
+      case 'mods':
+        return 'Mod';
+      case 'resources':
+        return 'Resource';
+      case 'arcanes':
+        return 'Arcane';
+      default:
+        return 'Other';
     }
   }
 
@@ -114,7 +127,7 @@ export class DropTableService {
     return data.relics;
   }
 
-  private async getMockData(): Promise<MockData> {
+  private async getMockData(): Promise<any> {
     // Mock data for demonstration purposes
     return {
       items: [

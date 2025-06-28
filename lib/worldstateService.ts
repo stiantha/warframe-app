@@ -1,6 +1,6 @@
 import { WorldstateData, parseWorldstateData } from './worldstateParser';
 
-const WORLDSTATE_API_URL = 'https://api.warframestat.us/pc';
+const WORLDSTATE_API_URL = 'https://content.warframe.com/dynamic/worldState.php';
 
 export class WorldstateService {
   private static instance: WorldstateService;
